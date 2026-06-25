@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tblShift', function (Blueprint $table) {
             // Identity column mapped to standard integer generation 
-            $table->integer('autoID')->identity();
+            $table->id();
 
             // Primary key set explicitly on shiftName to remain uniform with your schema routing
             $table->string('shiftName', 100)->primary();

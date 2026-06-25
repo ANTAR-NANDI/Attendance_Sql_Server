@@ -10,8 +10,7 @@ return new class extends Migration
     {
         Schema::create('tblEmpInfo', function (Blueprint $table) {
             // auto_id column mimicking the legacy table's integer identity structure
-            $table->integer('auto_id')->identity();
-
+            $table->id();
             // Setting User_id as primary key to match original specifications
             $table->string('User_id', 50)->primary();
             $table->string('card_number', 50)->nullable();
