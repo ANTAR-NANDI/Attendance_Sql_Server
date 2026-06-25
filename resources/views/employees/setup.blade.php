@@ -3,7 +3,7 @@
 @section('content')
 <div class="max-w-8xl mx-auto bg-slate-300/90 border border-slate-800 p-5 rounded-lg shadow-md font-mono">
     
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+     <div class="grid grid-cols-1 lg:grid-cols-22 gap-6">
         
         <div class="lg:col-span-8 space-y-3.5">
             <form id="employeeForm" class="space-y-3 text-xs font-bold text-slate-800">
@@ -164,64 +164,6 @@
                 <button type="button" onclick="dispatchDeleteRequest()" class="bg-white hover:bg-slate-100 border border-slate-400 text-rose-700 py-1.5 text-xs font-bold rounded-xs shadow-xs cursor-pointer">Delete</button>
                 <button type="button" onclick="window.location.reload()" class="bg-white hover:bg-slate-100 border border-slate-400 py-1.5 text-xs font-bold rounded-xs shadow-xs cursor-pointer">Close</button>
             </div>
-            <div class="mt-6 bg-white border border-slate-400 rounded p-3">
-
-    <h2 class="font-bold text-sm mb-3">
-        Employee List
-    </h2>
-
-    <table class="w-full border text-xs">
-        <thead>
-            <tr class="bg-slate-200">
-                <th class="border p-2">ID</th>
-                <th class="border p-2">Name</th>
-                <th class="border p-2">Department</th>
-                <th class="border p-2">Designation</th>
-                <th class="border p-2">Action</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @foreach($employees as $employee)
-            <tr>
-                <td class="border p-2">
-                    {{ $employee->User_id }}
-                </td>
-
-                <td class="border p-2">
-                    {{ $employee->strName }}
-                </td>
-
-                <td class="border p-2">
-                    {{ $employee->strdepartment }}
-                </td>
-
-                <td class="border p-2">
-                    {{ $employee->strdesignation }}
-                </td>
-
-                <td class="border p-2">
-                    <button
-                        onclick="loadEmployee('{{ $employee->User_id }}')"
-                        class="bg-blue-500 text-white px-2 py-1 rounded">
-                        Edit
-                    </button>
-
-                    <button
-                        onclick="deleteEmployee('{{ $employee->User_id }}')"
-                        class="bg-red-500 text-white px-2 py-1 rounded">
-                        Delete
-                    </button>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-    <div class="mt-4">
-    {{ $employees->links() }}
-</div>
-
-</div>
         </div>
 
         <div class="lg:col-span-4 border border-slate-400/70 bg-slate-400/20 rounded p-4 flex flex-col items-center justify-start space-y-4">
@@ -239,11 +181,72 @@
                 Add Image
             </button>
         </div>
+        <div class="lg:col-span-10 border border-slate-400/70 bg-slate-400/20 rounded p-4 flex flex-col items-center justify-start space-y-4">
+             <h2 class="font-bold text-sm mb-3">
+                    Employee List
+                </h2>
+
+                <table class="w-full border text-xs">
+                    <thead>
+                        <tr class="bg-slate-200">
+                            <th class="border p-2">ID</th>
+                            <th class="border p-2">Name</th>
+                            <th class="border p-2">Department</th>
+                            <th class="border p-2">Designation</th>
+                            <th class="border p-2">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach($employees as $employee)
+                        <tr>
+                            <td class="border p-2">
+                                {{ $employee->User_id }}
+                            </td>
+
+                            <td class="border p-2">
+                                {{ $employee->strName }}
+                            </td>
+
+                            <td class="border p-2">
+                                {{ $employee->strdepartment }}
+                            </td>
+
+                            <td class="border p-2">
+                                {{ $employee->strdesignation }}
+                            </td>
+
+                            <td class="border p-2">
+                                <button
+    onclick="loadEmployee('{{ $employee->User_id }}')"
+    class="bg-blue-500 text-white px-2 py-1 rounded">
+    Edit
+</button>
+
+                                <button
+                                    onclick="deleteEmployee('{{ $employee->User_id }}')"
+                                    class="bg-red-500 text-white px-2 py-1 rounded">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <div class="mt-6 flex justify-center items-center w-full">
+    <div class="inline-block bg-white px-4 py-2 border border-slate-400 rounded shadow-xs">
+        {{ $employees->links() }}
+    </div>
+</div>
+        </div>
 
     </div>
 </div>
 
 <script>
+    /**
+     * Clear and reset form input states ("New" button action).
+     */
     function loadEmployee(id)
 {
     document.getElementById('User_id').value = id;
@@ -254,9 +257,36 @@
         behavior: 'smooth'
     });
 }
-    /**
-     * Clear and reset form input states ("New" button action).
-     */
+    function deleteEmployee(id)
+{
+    if (!confirm('Are you sure you want to delete this employee?')) {
+        return;
+    }
+
+    fetch(`/dashboard/employees/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        alert(data.message);
+
+        if (data.success) {
+            location.reload(); // refresh employee list
+        }
+
+    })
+    .catch(error => {
+        console.error(error);
+        alert('Failed to delete employee.');
+    });
+}
     function initializeWorkspace() {
         document.getElementById('employeeForm').reset();
         document.getElementById('form_mode').value = 'CREATE';

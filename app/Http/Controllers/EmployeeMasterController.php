@@ -15,7 +15,7 @@ class EmployeeMasterController extends Controller
     {
         $employees = DB::table('tblEmpInfo')
             ->orderBy('id', 'ASC')
-            ->paginate(3);
+            ->paginate(1);
         // Query live configuration structures using your exact SSMS columns
         $departments = DB::select("SELECT departmentName FROM tblDepartmentOrder ORDER BY order_by ASC");
         $designations = DB::select("SELECT designation FROM tblDesignationOrder ORDER BY numOrder ASC");
