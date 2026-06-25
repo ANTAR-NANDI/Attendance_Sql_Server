@@ -9,27 +9,29 @@ use Exception;
 class EmployeeMasterController extends Controller
 {
     /**
-     * Render the unified setup workspace view.
+     * Display the main workplace frame containing live lookup variables.
      */
     public function index()
     {
-        // Query live SQL Server lookup datasets for dropdown menus
-        $shifts = DB::select("SELECT autoID, ShiftName FROM tblShift");
-        $departments = DB::select("SELECT DeptID, DeptName FROM tblDepartmentOrder ORDER BY SortOrder ASC");
-        $designations = DB::select("SELECT DesigID, DesigName FROM tblDesignationOrder ORDER BY SortOrder ASC");
+        $employees = DB::table('tblEmpInfo')
+            ->orderBy('id', 'ASC')
+            ->paginate(3);
+        // Query live configuration structures using your exact SSMS columns
+        $departments = DB::select("SELECT departmentName FROM tblDepartmentOrder ORDER BY order_by ASC");
+        $designations = DB::select("SELECT designation FROM tblDesignationOrder ORDER BY numOrder ASC");
+        $shifts = DB::select("SELECT shiftName FROM tblShift WHERE ysnActive = 1");
 
-        // Fetch supervisors for the "Reporting To" selection
-        $supervisors = DB::select("SELECT User_id, Name FROM tblEmpInfo WHERE IsActive = 1");
+        // Populate the "Reporting To" option selector using active profiles
+        $supervisors = DB::select("SELECT User_id, strName FROM tblEmpInfo WHERE ysnactive = 1 ORDER BY strName ASC");
 
-        return view('employees.setup', compact('shifts', 'departments', 'designations', 'supervisors'));
+        return view('employees.setup', compact('employees', 'departments', 'designations', 'shifts', 'supervisors'));
     }
 
     /**
-     * Fetch a specific employee record via AJAX for editing or viewing.
+     * Retrieve an individual employee data profile via AJAX.
      */
     public function show($id)
     {
-        // Use your legacy primary identity key matching your database structure (e.g., User_id)
         $employee = DB::selectOne("SELECT * FROM tblEmpInfo WHERE User_id = ?", [$id]);
 
         if (!$employee) {
@@ -40,99 +42,98 @@ class EmployeeMasterController extends Controller
     }
 
     /**
-     * Store a new employee record (Natively mimicking the "Save" desktop button).
+     * Commit a fresh employee record registration step to SQL Server.
      */
     public function store(Request $request)
     {
         try {
-            // Check for existing User ID to mirror legacy database constraints
-            $exists = DB::selectOne("SELECT User_id FROM tblEmpInfo WHERE User_id = ?", [$request->user_id]);
+            $exists = DB::selectOne("SELECT User_id FROM tblEmpInfo WHERE User_id = ?", [$request->User_id]);
             if ($exists) {
-                return response()->json(['success' => false, 'message' => 'User ID already exists in the system.']);
+                return response()->json(['success' => false, 'message' => 'User ID matches an existing profile registry entry.']);
             }
 
-            // Handle optional image parsing and store path reference
-            $photoPath = null;
-            if ($request->hasFile('photo')) {
-                $photoPath = $request->file('photo')->store('employees', 'public');
+            $photoBase64 = null;
+            if ($request->hasFile('image_file')) {
+                $photoBase64 = 'data:' . $request->file('image_file')->getMimeType() . ';base64,' . base64_encode($request->file('image_file')->get());
             }
 
-            // Direct INSERT execution targeting your legacy table architecture
             DB::insert("INSERT INTO tblEmpInfo 
-                (User_id, FC_id, Name, DeptID, DesigID, JoinDate, Religion, BloodGroup, Gender, IsAdmin, ShiftID, ReportingTo, IsActive, InActiveReason, PhotoPath) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
-                $request->user_id,
-                $request->fc_id,
-                $request->name,
-                $request->department_id,
-                $request->designation_id,
-                $request->join_date,
-                $request->religion,
-                $request->blood_group,
-                $request->gender,
-                $request->is_admin,
-                $request->shift_id,
-                $request->reporting_to,
-                1,
-                null,
-                $photoPath
+                (User_id, card_number, strName, strdepartment, strdesignation, join_Date, RelioGion, bloodGroup, Gender, ysnAdmin, shiftName, reporting_boss, empType, workStation, ysnactive, entryDate, image) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, GETDATE(), ?)", [
+                $request->User_id,
+                $request->card_number,
+                $request->strName,
+                $request->strdepartment,
+                $request->strdesignation,
+                $request->join_Date,
+                $request->RelioGion,
+                $request->bloodGroup,
+                $request->Gender,
+                $request->ysnAdmin ?? 0,
+                $request->shiftName,
+                $request->reporting_boss,
+                $request->empType,
+                $request->workStation,
+                $photoBase64
             ]);
 
-            return response()->json(['success' => true, 'message' => 'Employee profile successfully saved to SQL Server.']);
+            return response()->json(['success' => true, 'message' => 'Employee profile successfully saved to database.']);
         } catch (Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Database Exception: ' . $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => 'Insertion Exception: ' . $e->getMessage()]);
         }
     }
 
     /**
-     * Update an existing employee record (Mimicking the "Edit" save state).
+     * Update an existing employee profile row entry.
      */
     public function update(Request $request, $id)
     {
         try {
-            $photoPath = $request->existing_photo_path;
-            if ($request->hasFile('photo')) {
-                $photoPath = $request->file('photo')->store('employees', 'public');
+            $photoBase64 = $request->existing_image_data;
+            if ($request->hasFile('image_file')) {
+                $photoBase64 = 'data:' . $request->file('image_file')->getMimeType() . ';base64,' . base64_encode($request->file('image_file')->get());
             }
 
             DB::update("UPDATE tblEmpInfo SET 
-                FC_id = ?, Name = ?, DeptID = ?, DesigID = ?, JoinDate = ?, Religion = ?, 
-                BloodGroup = ?, Gender = ?, IsAdmin = ?, ShiftID = ?, ReportingTo = ?, 
-                IsActive = ?, InActiveReason = ?, PhotoPath = ? 
+                card_number = ?, strName = ?, strdepartment = ?, strdesignation = ?, join_Date = ?, RelioGion = ?, 
+                bloodGroup = ?, Gender = ?, ysnAdmin = ?, shiftName = ?, reporting_boss = ?, 
+                empType = ?, workStation = ?, ysnactive = ?, inactiveReason = ?, image = ?, ModifyDate = GETDATE() 
                 WHERE User_id = ?", [
-                $request->fc_id,
-                $request->name,
-                $request->department_id,
-                $request->designation_id,
-                $request->join_date,
-                $request->religion,
-                $request->blood_group,
-                $request->gender,
-                $request->is_admin,
-                $request->shift_id,
-                $request->reporting_to,
-                $request->status == 'Active' ? 1 : 0,
-                $request->inactive_reason,
-                $photoPath,
+                $request->card_number,
+                $request->strName,
+                $request->strdepartment,
+                $request->strdesignation,
+                $request->join_Date,
+                $request->RelioGion,
+                $request->bloodGroup,
+                $request->Gender,
+                $request->ysnAdmin ?? 0,
+                $request->shiftName,
+                $request->reporting_boss,
+                $request->empType,
+                $request->workStation,
+                $request->ysnactive,
+                $request->inactiveReason,
+                $photoBase64,
                 $id
             ]);
 
             return response()->json(['success' => true, 'message' => 'Employee profile successfully updated.']);
         } catch (Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Database Update Exception: ' . $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => 'Update Exception: ' . $e->getMessage()]);
         }
     }
 
     /**
-     * Delete an employee record (Mimicking the "Delete" desktop button action).
+     * Remove an individual entry row from the registry table.
      */
     public function destroy($id)
     {
         try {
             DB::delete("DELETE FROM tblEmpInfo WHERE User_id = ?", [$id]);
-            return response()->json(['success' => true, 'message' => 'Employee record removed from the master registry.']);
+            return response()->json(['success' => true, 'message' => 'Employee record removed from system registry.']);
         } catch (Exception $e) {
-            return response()->json(['success' => false, 'message' => 'The record cannot be deleted due to existing attendance log references. Consider setting the status to Inactive instead.']);
+            return response()->json(['success' => false, 'message' => 'Purge Conflict: This record is currently linked to log values.']);
         }
     }
 }

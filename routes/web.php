@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginSessionController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeMasterController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,16 +19,15 @@ Route::middleware('guest')->group(function () {
 // Guarded Enterprise Workspace Infrastructure (Requires Active Authentication State)
 Route::middleware('auth')->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    // Employee Entry form sits cleanly on the primary landing path
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Employee Registry Management Routes
-    Route::get('/setup/employees', [EmployeeMasterController::class, 'index'])->name('employees.setup');
-    Route::get('/setup/employees/{id}', [EmployeeMasterController::class, 'show']);
-    Route::post('/setup/employees', [EmployeeMasterController::class, 'store']);
-    Route::put('/setup/employees/{id}', [EmployeeMasterController::class, 'update']);
-    Route::delete('/setup/employees/{id}', [EmployeeMasterController::class, 'destroy']);
+    // AJAX Application Frame API Operations Tunnels
+    Route::get('/dashboard/employees', [EmployeeMasterController::class, 'index'])->name('employees.index');
+    Route::get('/dashboard/employees/{id}', [EmployeeMasterController::class, 'show']);
+    Route::post('/dashboard/employees', [EmployeeMasterController::class, 'store']);
+    Route::put('/dashboard/employees/{id}', [EmployeeMasterController::class, 'update']);
+    Route::delete('/dashboard/employees/{id}', [EmployeeMasterController::class, 'destroy']);
 
     Route::post('/logout', [LoginSessionController::class, 'destroy'])->name('logout');
 });
