@@ -12,11 +12,11 @@
             <span>Dashboard</span>
         </a>
         
-        <div class="pt-5 pb-1 px-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Master Registry</div>
-        <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-slate-100 transition">
-            <span class="text-sm">🏢</span>
-            <span>Branches</span>
-        </a>
+       <div class="pt-5 pb-1 px-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Biometric Engines</div>
+<a href="{{ route('employees.setup') }}" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm font-semibold {{ Route::currentRouteName() == 'employees.setup' ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100 transition' }}">
+    <span class="text-sm">⚙️</span>
+    <span>Employee Setup Master</span>
+</a>
         <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-slate-100 transition">
             <span class="text-sm">📁</span>
             <span>Departments</span>
