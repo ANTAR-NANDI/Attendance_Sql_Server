@@ -14,17 +14,71 @@ class EmployeeMasterController extends Controller
     public function index()
     {
         $employees = DB::table('tblEmpInfo')
-            ->orderBy('id', 'ASC')
-            ->paginate(1);
-        // Query live configuration structures using your exact SSMS columns
-        $departments = DB::select("SELECT departmentName FROM tblDepartmentOrder ORDER BY order_by ASC");
-        $designations = DB::select("SELECT designation FROM tblDesignationOrder ORDER BY numOrder ASC");
-        $shifts = DB::select("SELECT shiftName FROM tblShift WHERE ysnActive = 1");
+            ->orderBy('id', 'desc')
+            ->paginate(20);
 
-        // Populate the "Reporting To" option selector using active profiles
-        $supervisors = DB::select("SELECT User_id, strName FROM tblEmpInfo WHERE ysnactive = 1 ORDER BY strName ASC");
+        return view('employees.index', compact('employees'));
+    }
+    public function create()
+    {
+        $departments = DB::table('tblDepartmentOrder')
+            ->orderBy('order_by')
+            ->get();
 
-        return view('employees.setup', compact('employees', 'departments', 'designations', 'shifts', 'supervisors'));
+        $designations = DB::table('tblDesignationOrder')
+            ->orderBy('numOrder')
+            ->get();
+
+        $shifts = DB::table('tblShift')
+            ->where('ysnActive', 1)
+            ->get();
+
+        $supervisors = DB::table('tblEmpInfo')
+            ->where('ysnactive', 1)
+            ->get();
+
+        return view(
+            'employees.create',
+            compact(
+                'departments',
+                'designations',
+                'shifts',
+                'supervisors'
+            )
+        );
+    }
+    public function edit($id)
+    {
+        $employee = DB::table('tblEmpInfo')
+            ->where('User_id', $id)
+            ->first();
+
+        $departments = DB::table('tblDepartmentOrder')
+            ->orderBy('order_by')
+            ->get();
+
+        $designations = DB::table('tblDesignationOrder')
+            ->orderBy('numOrder')
+            ->get();
+
+        $shifts = DB::table('tblShift')
+            ->where('ysnActive', 1)
+            ->get();
+
+        $supervisors = DB::table('tblEmpInfo')
+            ->where('ysnactive', 1)
+            ->get();
+
+        return view(
+            'employees.edit',
+            compact(
+                'employee',
+                'departments',
+                'designations',
+                'shifts',
+                'supervisors'
+            )
+        );
     }
 
     /**
@@ -77,9 +131,13 @@ class EmployeeMasterController extends Controller
                 $photoBase64
             ]);
 
-            return response()->json(['success' => true, 'message' => 'Employee profile successfully saved to database.']);
+            return redirect()
+                ->route('employees.index')
+                ->with('success', 'Employee added successfully');
         } catch (Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Insertion Exception: ' . $e->getMessage()]);
+            return redirect()
+                ->route('employees.index')
+                ->with('error', 'Failed to add Employee');
         }
     }
 
@@ -118,7 +176,9 @@ class EmployeeMasterController extends Controller
                 $id
             ]);
 
-            return response()->json(['success' => true, 'message' => 'Employee profile successfully updated.']);
+            return redirect()
+                ->route('employees.index')
+                ->with('success', 'Employee updated successfully');
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => 'Update Exception: ' . $e->getMessage()]);
         }

@@ -1,35 +1,32 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-100">
+<html lang="en" class="h-full bg-slate-50">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Administration Control Workspace</title>
+    <title>Enterprise HRM & Attendance Matrix</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body class="h-full font-sans antialiased text-slate-900">
+<body class="h-full font-sans antialiased text-slate-900 selection:bg-indigo-500 selection:text-white">
 
     @auth
-        <header class="bg-slate-800 text-white h-14 px-6 flex items-center justify-between shadow-md">
-            <div class="flex items-center space-x-3">
-                <div class="h-7 w-7 rounded bg-indigo-600 flex items-center justify-center font-black text-sm">E</div>
-                <span class="text-sm font-bold tracking-wide">Employee Setup Workspace</span>
-            </div>
-            <div class="flex items-center space-x-4">
-                <span class="text-xs text-slate-300 font-semibold">Active: {{ Auth::user()->name }}</span>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="bg-slate-700 hover:bg-rose-700 text-white px-3 py-1 text-xs font-bold rounded transition cursor-pointer">
-                        Sign Out
-                    </button>
-                </form>
-            </div>
-        </header>
+        <div class="flex h-screen overflow-hidden">
+            
+            @include('partials.sidebar')
 
-        <main class="p-6">
-            @yield('content')
-        </main>
+            <div class="flex flex-col flex-1 min-w-0 bg-slate-50">
+                
+                @include('partials.topbar')
+
+                <main class="flex-1 overflow-y-auto p-6 lg:p-8">
+                    @yield('content')
+                </main>
+
+                @include('partials.footer')
+            </div>
+
+        </div>
     @else
-        <div class="min-h-screen flex items-center justify-center bg-slate-900">
+        <div class="min-h-screen flex items-center justify-center">
             @yield('content')
         </div>
     @endauth

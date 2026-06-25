@@ -23,11 +23,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // AJAX Application Frame API Operations Tunnels
-    Route::get('/dashboard/employees', [EmployeeMasterController::class, 'index'])->name('employees.index');
-    Route::get('/dashboard/employees/{id}', [EmployeeMasterController::class, 'show']);
-    Route::post('/dashboard/employees', [EmployeeMasterController::class, 'store']);
-    Route::put('/dashboard/employees/{id}', [EmployeeMasterController::class, 'update']);
-    Route::delete('/dashboard/employees/{id}', [EmployeeMasterController::class, 'destroy']);
+    Route::get('/dashboard/employees', [EmployeeMasterController::class, 'index'])
+        ->name('employees.index');
+
+    Route::get('/dashboard/employees/create', [EmployeeMasterController::class, 'create'])
+        ->name('employees.create');
+
+    Route::post('/dashboard/employees', [EmployeeMasterController::class, 'store'])
+        ->name('employees.store');
+
+    Route::get('/dashboard/employees/{id}/edit', [EmployeeMasterController::class, 'edit'])
+        ->name('employees.edit');
+
+    Route::put('/dashboard/employees/{id}', [EmployeeMasterController::class, 'update'])
+        ->name('employees.update');
+
+    Route::delete('/dashboard/employees/{id}', [EmployeeMasterController::class, 'destroy'])
+        ->name('employees.destroy');
 
     Route::post('/logout', [LoginSessionController::class, 'destroy'])->name('logout');
 });
