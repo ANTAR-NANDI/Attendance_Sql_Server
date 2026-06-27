@@ -33,15 +33,31 @@
             <span class="text-sm">🎓</span>
             <span>Holidays</span>
         </a>
+        <div class="space-y-1 relative">
+           <input type="checkbox" id="leave-toggle" class="peer hidden" />
 
-        {{-- <div class="pt-5 pb-1 px-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Biometric Engines</div>
-        <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-slate-100 transition">
-            <span class="text-sm">👥</span>
-            <span>Employee Records</span>
-        </a>
-        <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-slate-100 transition">
-            <span class="text-sm">⏱️</span>
-            <span>Attendance Log</span>
-        </a> --}}
+        <label for="leave-toggle" class="w-full flex items-center justify-between px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-slate-100 transition cursor-pointer select-none">
+            <div class="flex items-center space-x-3">
+                <span class="text-sm">📅</span>
+                <span>Leave</span>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transform transition-transform duration-200 peer-checked:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+        </label>
+
+        <div class="hidden peer-checked:block pl-11 space-y-1">
+            <a onclick="window.location.href='{{ route('leave_types.index') }}'" href="#" class="block px-4 py-2 rounded-lg text-xs font-medium text-slate-400 hover:bg-slate-800 hover:text-slate-100 transition">
+                Leave Type
+            </a>
+            
+            <a onclick="window.location.href='{{ route('leaves.create') }}'" href="#" class="block px-4 py-2 rounded-lg text-xs font-medium text-slate-400 hover:bg-slate-800 hover:text-slate-100 transition">
+                Leave Apply
+            </a>
+        </div>
+</div>
+        
+
+    
     </nav>
 </aside>

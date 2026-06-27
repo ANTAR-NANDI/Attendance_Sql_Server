@@ -7,6 +7,8 @@ use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeMasterController;
 use App\Http\Controllers\HolidayController;
+use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\ShiftController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('dashboard/designations', DesignationController::class);
     Route::resource('dashboard/shifts', ShiftController::class);
     Route::resource('dashboard/holidays', HolidayController::class);
+    Route::resource('dashboard/leave_types', LeaveTypeController::class);
+    Route::resource('dashboard/leaves', LeaveController::class);
 
     Route::post('/logout', [LoginSessionController::class, 'destroy'])->name('logout');
 });
