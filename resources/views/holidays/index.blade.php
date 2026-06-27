@@ -9,20 +9,19 @@
 
         <div>
             <h1 class="text-2xl font-bold text-slate-800">
-                Employee Management
+                Holiday Management
             </h1>
 
             <p class="text-sm text-slate-500">
-                Manage all employee information
+                Manage all Holiday information
             </p>
         </div>
 
-        <a href="{{ route('employees.create') }}"
+        <a href="{{ route('holidays.create') }}"
            class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg shadow">
 
             <span>+</span>
-
-            <span>Add Employee</span>
+            <span>Add Holiday</span>
 
         </a>
 
@@ -32,7 +31,7 @@
     <div class="bg-white rounded-xl shadow border border-slate-200 p-5">
 
         <form method="GET"
-              action="{{ route('employees.index') }}">
+              action="{{ route('holidays.index') }}">
 
             <div class="flex flex-col lg:flex-row gap-3">
 
@@ -40,7 +39,7 @@
                     type="text"
                     name="search"
                     value="{{ request('search') }}"
-                    placeholder="Search by User ID, Card No or Name..."
+                    placeholder="Search by Holiday Name or Type..."
                     class="flex-1 rounded-lg border border-slate-300 px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
 
                 <button
@@ -56,7 +55,7 @@
 
     </div>
 
-    {{-- Employee Table --}}
+    {{-- Holiday Table --}}
     <div class="bg-white rounded-xl shadow border border-slate-200 overflow-hidden">
 
         <div class="overflow-x-auto">
@@ -72,31 +71,19 @@
                     </th>
 
                     <th class="px-4 py-3 text-left text-xs font-bold uppercase">
-                        User ID
+                        Holiday Name
                     </th>
 
                     <th class="px-4 py-3 text-left text-xs font-bold uppercase">
-                        Card No
+                        Date
                     </th>
 
                     <th class="px-4 py-3 text-left text-xs font-bold uppercase">
-                        Name
+                        Type
                     </th>
 
                     <th class="px-4 py-3 text-left text-xs font-bold uppercase">
-                        Department
-                    </th>
-
-                    <th class="px-4 py-3 text-left text-xs font-bold uppercase">
-                        Designation
-                    </th>
-
-                    <th class="px-4 py-3 text-left text-xs font-bold uppercase">
-                        Shift
-                    </th>
-
-                    <th class="px-4 py-3 text-center text-xs font-bold uppercase">
-                        Status
+                        Description
                     </th>
 
                     <th class="px-4 py-3 text-center text-xs font-bold uppercase">
@@ -109,61 +96,43 @@
 
                 <tbody class="divide-y divide-slate-200">
 
-                @forelse($employees as $employee)
+                @forelse($holidays as $holiday)
 
                     <tr class="hover:bg-slate-50">
 
+                        {{-- SL --}}
                         <td class="px-4 py-3">
-                            {{ $employees->firstItem()+$loop->index }}
+                            {{ $holidays->firstItem() + $loop->index }}
                         </td>
 
-                        <td class="px-4 py-3 font-semibold">
-                            {{ $employee->User_id }}
-                        </td>
-
+                        {{-- Name --}}
                         <td class="px-4 py-3">
-                            {{ $employee->card_number }}
+                            {{ $holiday->HolidayName }}
                         </td>
 
+                        {{-- Date --}}
                         <td class="px-4 py-3">
-                            {{ $employee->strName }}
+                            {{ \Carbon\Carbon::parse($holiday->holidaydate)->format('d M Y') }}
                         </td>
 
+                        {{-- Type --}}
                         <td class="px-4 py-3">
-                            {{ $employee->departmentName }}
+                            <span class="px-2 py-1 text-xs rounded bg-slate-200">
+                                {{ ucfirst($holiday->type) }}
+                            </span>
                         </td>
 
+                        {{-- Description --}}
                         <td class="px-4 py-3">
-                            {{ $employee->designation }}
+                            {{ $holiday->strDescription }}
                         </td>
 
-                        <td class="px-4 py-3">
-                            {{ $employee->shiftName }}
-                        </td>
-
-                        <td class="px-4 py-3 text-center">
-
-                            @if($employee->ysnactive)
-
-                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                    Active
-                                </span>
-
-                            @else
-
-                                <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                    Inactive
-                                </span>
-
-                            @endif
-
-                        </td>
-
+                        {{-- Action --}}
                         <td class="px-4 py-3">
 
                             <div class="flex justify-center gap-2">
 
-                                <a href="{{ route('employees.edit',$employee->id) }}"
+                                <a href="{{ route('holidays.edit', $holiday->id) }}"
                                    class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm">
 
                                     Edit
@@ -171,11 +140,10 @@
                                 </a>
 
                                 <form method="POST"
-                                      action="{{ route('employees.destroy',$employee->id) }}"
-                                      onsubmit="return confirm('Delete this employee?')">
+                                      action="{{ route('holidays.destroy', $holiday->id) }}"
+                                      onsubmit="return confirm('Delete this Holiday?')">
 
                                     @csrf
-
                                     @method('DELETE')
 
                                     <button
@@ -197,10 +165,10 @@
 
                     <tr>
 
-                        <td colspan="9"
+                        <td colspan="6"
                             class="text-center py-10 text-slate-500">
 
-                            No Employees Found
+                            No Holidays Found
 
                         </td>
 
@@ -217,11 +185,11 @@
     </div>
 
     {{-- Pagination --}}
-    @if($employees->hasPages())
+    @if($holidays->hasPages())
 
         <div class="bg-white rounded-xl shadow border border-slate-200 p-4">
 
-            {{ $employees->withQueryString()->links() }}
+            {{ $holidays->withQueryString()->links() }}
 
         </div>
 

@@ -22,21 +22,21 @@ class UserSeeder extends Seeder
         }
         $shifts = [
             // Evening Shifts (E Prefix)
-            ['autoID' => 8, 'shiftName' => 'E-1', 'startTime' => '13:00:00', 'workinghour' => 540.00, 'ysnActive' => 1, 'daystart' => '12:00:00', 'dayhour' => 12.00],
-            ['autoID' => 9, 'shiftName' => 'E-2', 'startTime' => '14:00:00', 'workinghour' => 540.00, 'ysnActive' => 1, 'daystart' => '12:00:00', 'dayhour' => 12.00],
-            ['autoID' => 10, 'shiftName' => 'E-3', 'startTime' => '15:00:00', 'workinghour' => 540.00, 'ysnActive' => 1, 'daystart' => '13:00:00', 'dayhour' => 12.00],
-            ['autoID' => 11, 'shiftName' => 'E-4', 'startTime' => '16:00:00', 'workinghour' => 540.00, 'ysnActive' => 1, 'daystart' => '14:00:00', 'dayhour' => 12.00],
+            ['shiftName' => 'E-1', 'startTime' => '13:00:00', 'workinghour' => 540.00, 'ysnActive' => 1, 'daystart' => '12:00:00', 'dayhour' => 12.00],
+            ['shiftName' => 'E-2', 'startTime' => '14:00:00', 'workinghour' => 540.00, 'ysnActive' => 1, 'daystart' => '12:00:00', 'dayhour' => 12.00],
+            ['shiftName' => 'E-3', 'startTime' => '15:00:00', 'workinghour' => 540.00, 'ysnActive' => 1, 'daystart' => '13:00:00', 'dayhour' => 12.00],
+            ['shiftName' => 'E-4', 'startTime' => '16:00:00', 'workinghour' => 540.00, 'ysnActive' => 1, 'daystart' => '14:00:00', 'dayhour' => 12.00],
 
             // Morning Shifts (M Prefix)
-            ['autoID' => 1, 'shiftName' => 'M-1', 'startTime' => '06:00:00', 'workinghour' => 540.00, 'ysnActive' => 1, 'daystart' => '05:00:00', 'dayhour' => 12.00],
-            ['autoID' => 2, 'shiftName' => 'M-2', 'startTime' => '07:00:00', 'workinghour' => 540.00, 'ysnActive' => 1, 'daystart' => '05:00:00', 'dayhour' => 12.00],
-            ['autoID' => 3, 'shiftName' => 'M-3', 'startTime' => '08:00:00', 'workinghour' => 540.00, 'ysnActive' => 1, 'daystart' => '05:00:00', 'dayhour' => 12.00],
-            ['autoID' => 4, 'shiftName' => 'M-4', 'startTime' => '09:00:00', 'workinghour' => 540.00, 'ysnActive' => 1, 'daystart' => '08:20:00', 'dayhour' => 12.00],
-            ['autoID' => 5, 'shiftName' => 'M-5', 'startTime' => '10:00:00', 'workinghour' => 540.00, 'ysnActive' => 1, 'daystart' => '05:00:00', 'dayhour' => 12.00],
+            ['shiftName' => 'M-1', 'startTime' => '06:00:00', 'workinghour' => 540.00, 'ysnActive' => 1, 'daystart' => '05:00:00', 'dayhour' => 12.00],
+            ['shiftName' => 'M-2', 'startTime' => '07:00:00', 'workinghour' => 540.00, 'ysnActive' => 1, 'daystart' => '05:00:00', 'dayhour' => 12.00],
+            ['shiftName' => 'M-3', 'startTime' => '08:00:00', 'workinghour' => 540.00, 'ysnActive' => 1, 'daystart' => '05:00:00', 'dayhour' => 12.00],
+            ['shiftName' => 'M-4', 'startTime' => '09:00:00', 'workinghour' => 540.00, 'ysnActive' => 1, 'daystart' => '08:20:00', 'dayhour' => 12.00],
+            ['shiftName' => 'M-5', 'startTime' => '10:00:00', 'workinghour' => 540.00, 'ysnActive' => 1, 'daystart' => '05:00:00', 'dayhour' => 12.00],
 
             // Night Shifts (N Prefix)
-            ['autoID' => 6, 'shiftName' => 'N-1', 'startTime' => '22:00:00', 'workinghour' => 480.00, 'ysnActive' => 1, 'daystart' => '20:00:00', 'dayhour' => 12.00],
-            ['autoID' => 7, 'shiftName' => 'N-2', 'startTime' => '23:00:00', 'workinghour' => 480.00, 'ysnActive' => 1, 'daystart' => '20:00:00', 'dayhour' => 12.00],
+            ['shiftName' => 'N-1', 'startTime' => '22:00:00', 'workinghour' => 480.00, 'ysnActive' => 1, 'daystart' => '20:00:00', 'dayhour' => 12.00],
+            ['shiftName' => 'N-2', 'startTime' => '23:00:00', 'workinghour' => 480.00, 'ysnActive' => 1, 'daystart' => '20:00:00', 'dayhour' => 12.00],
         ];
 
         foreach ($shifts as $shift) {

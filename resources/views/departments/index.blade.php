@@ -9,20 +9,20 @@
 
         <div>
             <h1 class="text-2xl font-bold text-slate-800">
-                Employee Management
+                Department Management
             </h1>
 
             <p class="text-sm text-slate-500">
-                Manage all employee information
+                Manage all Department information
             </p>
         </div>
 
-        <a href="{{ route('employees.create') }}"
+        <a href="{{ route('departments.create') }}"
            class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg shadow">
 
             <span>+</span>
 
-            <span>Add Employee</span>
+            <span>Add Department</span>
 
         </a>
 
@@ -32,7 +32,7 @@
     <div class="bg-white rounded-xl shadow border border-slate-200 p-5">
 
         <form method="GET"
-              action="{{ route('employees.index') }}">
+              action="{{ route('departments.index') }}">
 
             <div class="flex flex-col lg:flex-row gap-3">
 
@@ -56,7 +56,7 @@
 
     </div>
 
-    {{-- Employee Table --}}
+    {{-- Department Table --}}
     <div class="bg-white rounded-xl shadow border border-slate-200 overflow-hidden">
 
         <div class="overflow-x-auto">
@@ -72,33 +72,10 @@
                     </th>
 
                     <th class="px-4 py-3 text-left text-xs font-bold uppercase">
-                        User ID
-                    </th>
-
-                    <th class="px-4 py-3 text-left text-xs font-bold uppercase">
-                        Card No
-                    </th>
-
-                    <th class="px-4 py-3 text-left text-xs font-bold uppercase">
                         Name
                     </th>
 
-                    <th class="px-4 py-3 text-left text-xs font-bold uppercase">
-                        Department
-                    </th>
-
-                    <th class="px-4 py-3 text-left text-xs font-bold uppercase">
-                        Designation
-                    </th>
-
-                    <th class="px-4 py-3 text-left text-xs font-bold uppercase">
-                        Shift
-                    </th>
-
-                    <th class="px-4 py-3 text-center text-xs font-bold uppercase">
-                        Status
-                    </th>
-
+                   
                     <th class="px-4 py-3 text-center text-xs font-bold uppercase">
                         Action
                     </th>
@@ -109,61 +86,25 @@
 
                 <tbody class="divide-y divide-slate-200">
 
-                @forelse($employees as $employee)
+                @forelse($departments as $department)
 
                     <tr class="hover:bg-slate-50">
 
                         <td class="px-4 py-3">
-                            {{ $employees->firstItem()+$loop->index }}
+                            {{ $departments->firstItem()+$loop->index }}
                         </td>
 
-                        <td class="px-4 py-3 font-semibold">
-                            {{ $employee->User_id }}
-                        </td>
 
                         <td class="px-4 py-3">
-                            {{ $employee->card_number }}
+                            {{ $department->departmentName }}
                         </td>
 
-                        <td class="px-4 py-3">
-                            {{ $employee->strName }}
-                        </td>
-
-                        <td class="px-4 py-3">
-                            {{ $employee->departmentName }}
-                        </td>
-
-                        <td class="px-4 py-3">
-                            {{ $employee->designation }}
-                        </td>
-
-                        <td class="px-4 py-3">
-                            {{ $employee->shiftName }}
-                        </td>
-
-                        <td class="px-4 py-3 text-center">
-
-                            @if($employee->ysnactive)
-
-                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                    Active
-                                </span>
-
-                            @else
-
-                                <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                    Inactive
-                                </span>
-
-                            @endif
-
-                        </td>
 
                         <td class="px-4 py-3">
 
                             <div class="flex justify-center gap-2">
 
-                                <a href="{{ route('employees.edit',$employee->id) }}"
+                                <a href="{{ route('departments.edit',$department->id) }}"
                                    class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm">
 
                                     Edit
@@ -171,8 +112,8 @@
                                 </a>
 
                                 <form method="POST"
-                                      action="{{ route('employees.destroy',$employee->id) }}"
-                                      onsubmit="return confirm('Delete this employee?')">
+                                      action="{{ route('departments.destroy',$department->id) }}"
+                                      onsubmit="return confirm('Delete this Department?')">
 
                                     @csrf
 
@@ -200,7 +141,7 @@
                         <td colspan="9"
                             class="text-center py-10 text-slate-500">
 
-                            No Employees Found
+                            No Departments Found
 
                         </td>
 
@@ -217,11 +158,11 @@
     </div>
 
     {{-- Pagination --}}
-    @if($employees->hasPages())
+    @if($departments->hasPages())
 
         <div class="bg-white rounded-xl shadow border border-slate-200 p-4">
 
-            {{ $employees->withQueryString()->links() }}
+            {{ $departments->withQueryString()->links() }}
 
         </div>
 

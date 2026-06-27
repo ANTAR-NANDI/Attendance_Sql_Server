@@ -2,8 +2,12 @@
 
 use App\Http\Controllers\Auth\LoginSessionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeMasterController;
+use App\Http\Controllers\HolidayController;
+use App\Http\Controllers\ShiftController;
 use Illuminate\Support\Facades\Route;
 
 // Redirect clean base domain index inquiries straight to login view
@@ -23,6 +27,10 @@ Route::middleware('auth')->group(function () {
     // Employee Entry form sits cleanly on the primary landing path
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('dashboard/employees', EmployeeController::class);
+    Route::resource('dashboard/departments', DepartmentController::class);
+    Route::resource('dashboard/designations', DesignationController::class);
+    Route::resource('dashboard/shifts', ShiftController::class);
+    Route::resource('dashboard/holidays', HolidayController::class);
 
     Route::post('/logout', [LoginSessionController::class, 'destroy'])->name('logout');
 });

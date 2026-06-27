@@ -17,16 +17,24 @@
             <span class="text-sm">🏢</span>
             <span>Employees</span>
         </a>
-        <a  href="#" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-slate-100 transition">
+        <a onclick="window.location.href='{{ route('departments.index') }}'" href="#" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-slate-100 transition">
             <span class="text-sm">📁</span>
             <span>Departments</span>
         </a>
-        <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-slate-100 transition">
-            <span class="text-sm">🎓</span>
+        <a onclick="window.location.href='{{ route('designations.index') }}'" href="#" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-slate-100 transition">
+            <span class="text-sm">👥</span>
             <span>Designations</span>
         </a>
+         <a onclick="window.location.href='{{ route('shifts.index') }}'" href="#" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-slate-100 transition">
+            <span class="text-sm">⏱️</span>
+            <span>Shifts</span>
+        </a>
+        <a onclick="window.location.href='{{ route('holidays.index') }}'" href="#" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-slate-100 transition">
+            <span class="text-sm">🎓</span>
+            <span>Holidays</span>
+        </a>
 
-        <div class="pt-5 pb-1 px-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Biometric Engines</div>
+        {{-- <div class="pt-5 pb-1 px-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Biometric Engines</div>
         <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-slate-100 transition">
             <span class="text-sm">👥</span>
             <span>Employee Records</span>
@@ -34,6 +42,6 @@
         <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-slate-100 transition">
             <span class="text-sm">⏱️</span>
             <span>Attendance Log</span>
-        </a>
+        </a> --}}
     </nav>
 </aside>
