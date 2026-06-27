@@ -130,11 +130,11 @@
                         </td>
 
                         <td class="px-4 py-3">
-                            {{ $employee->strdepartment }}
+                            {{ $employee->departmentName }}
                         </td>
 
                         <td class="px-4 py-3">
-                            {{ $employee->strdesignation }}
+                            {{ $employee->designation }}
                         </td>
 
                         <td class="px-4 py-3">
@@ -163,7 +163,7 @@
 
                             <div class="flex justify-center gap-2">
 
-                                <a href="{{ route('employees.edit',$employee->User_id) }}"
+                                <a href="{{ route('employees.edit',$employee->id) }}"
                                    class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm">
 
                                     Edit

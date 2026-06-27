@@ -20,7 +20,7 @@
         </div>
 
         <form
-            action="{{ route('employees.update',$employee->User_id) }}"
+            action="{{ route('employees.update',$employee->id) }}"
             method="POST"
             enctype="multipart/form-data">
 
@@ -70,8 +70,8 @@
                             @foreach($departments as $department)
 
                             <option
-                                value="{{ $department->departmentName }}"
-                                {{ old('strdepartment',$employee->strdepartment)==$department->departmentName?'selected':'' }}>
+                                value="{{ $department->id }}"
+                                {{ old('id',$employee->id)==$department->id?'selected':'' }}>
 
                                 {{ $department->departmentName }}
 
@@ -93,8 +93,8 @@
                             @foreach($designations as $designation)
 
                             <option
-                                value="{{ $designation->designation }}"
-                                {{ old('strdesignation',$employee->strdesignation)==$designation->designation?'selected':'' }}>
+                                value="{{ $designation->id }}"
+                                {{ old('strdesignation',$employee->id)==$designation->id?'selected':'' }}>
 
                                 {{ $designation->designation }}
 
@@ -124,8 +124,8 @@
                             @foreach($shifts as $shift)
 
                                 <option
-                                    value="{{ $shift->shiftName }}"
-                                    {{ old('shiftName', $employee->shiftName) == $shift->shiftName ? 'selected' : '' }}>
+                                    value="{{ $shift->id }}"
+                                    {{ old('shiftName', $employee->id) == $shift->id ? 'selected' : '' }}>
 
                                     {{ $shift->shiftName }}
 
@@ -154,8 +154,8 @@
                             @foreach($supervisors as $supervisor)
 
                                 <option
-                                    value="{{ $supervisor->strName }}"
-                                    {{ old('reporting_boss', $employee->reporting_boss) == $supervisor->strName ? 'selected' : '' }}>
+                                    value="{{ $supervisor->id }}"
+                                    {{ old('id', $employee->id) == $supervisor->id ? 'selected' : '' }}>
 
                                     {{ $supervisor->strName }}
 

@@ -131,8 +131,8 @@
                                     @foreach($departments as $department)
 
                                         <option
-                                            value="{{ $department->departmentName }}"
-                                            {{ old('strdepartment')==$department->departmentName ? 'selected' : '' }}>
+                                            value="{{ $department->id }}"
+                                            {{ old('id')==$department->id ? 'selected' : '' }}>
 
                                             {{ $department->departmentName }}
 
@@ -163,8 +163,8 @@
                                     @foreach($designations as $designation)
 
                                         <option
-                                            value="{{ $designation->designation }}"
-                                            {{ old('strdesignation')==$designation->designation ? 'selected' : '' }}>
+                                            value="{{ $designation->id }}"
+                                            {{ old('id')==$designation->id ? 'selected' : '' }}>
 
                                             {{ $designation->designation }}
 
@@ -192,8 +192,8 @@
                                     @foreach($shifts as $shift)
 
                                         <option
-                                            value="{{ $shift->shiftName }}"
-                                            {{ old('shiftName') == $shift->shiftName ? 'selected' : '' }}>
+                                            value="{{ $shift->id }}"
+                                            {{ old('id') == $shift->id ? 'selected' : '' }}>
 
                                             {{ $shift->shiftName }}
 
@@ -219,8 +219,8 @@
                                     @foreach($supervisors as $supervisor)
 
                                         <option
-                                            value="{{ $supervisor->strName }}"
-                                            {{ old('reporting_boss') == $supervisor->strName ? 'selected' : '' }}>
+                                            value="{{ $supervisor->id }}"
+                                            {{ old('id') == $supervisor->id ? 'selected' : '' }}>
 
                                             {{ $supervisor->strName }}
                                             ({{ $supervisor->User_id }})

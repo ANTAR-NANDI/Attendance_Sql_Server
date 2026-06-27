@@ -13,8 +13,19 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = DB::table('tblEmpInfo')
-            ->orderBy('id', 'DESC')
+        $employees = DB::table('tblEmpInfo as e')
+            ->leftJoin('tblDepartmentOrder as d', 'e.strdepartment', '=', 'd.id')
+            ->leftJoin('tblDesignationOrder as des', 'e.strdesignation', '=', 'des.id')
+            ->leftJoin('tblShift as s', 'e.shiftName', '=', 's.id')
+            ->leftJoin('tblEmpInfo as boss', 'e.reporting_boss', '=', 'boss.id')
+            ->select(
+                'e.*',
+                'd.departmentName',
+                'des.designation',
+                's.shiftName',
+                'boss.strName as reportingBoss'
+            )
+            ->orderBy('e.id', 'DESC')
             ->paginate(20);
 
         return view('employees.index', compact('employees'));
@@ -110,7 +121,7 @@ class EmployeeController extends Controller
     public function edit($id)
     {
         $employee = DB::table('tblEmpInfo')
-            ->where('User_id', $id)
+            ->where('id', $id)
             ->first();
 
         if (!$employee) {
@@ -158,7 +169,7 @@ class EmployeeController extends Controller
         try {
 
             $employee = DB::table('tblEmpInfo')
-                ->where('User_id', $id)
+                ->where('id', $id)
                 ->first();
 
             if (!$employee) {
