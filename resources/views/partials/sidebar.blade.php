@@ -2,7 +2,7 @@
     <div class="p-5 bg-slate-950 flex items-center border-b border-slate-800 h-16 shrink-0">
         <div class="flex items-center space-x-3">
             <div class="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center font-black text-white tracking-wider">H</div>
-            <span class="text-lg font-bold tracking-wider text-white">HRM Core</span>
+            <span class="text-lg font-bold tracking-wider text-white">HRM W3</span>
         </div>
     </div>
 

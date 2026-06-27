@@ -9,13 +9,21 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $departments = DB::select("SELECT departmentName FROM tblDepartmentOrder ORDER BY order_by ASC");
-        $designations = DB::select("SELECT designation FROM tblDesignationOrder ORDER BY numOrder ASC");
-        $shifts = DB::select("SELECT shiftName FROM tblShift WHERE ysnActive = 1");
+        $totalEmployees = DB::table('tblEmpInfo')->count();
 
-        // Populate the "Reporting To" option selector using active profiles
-        $supervisors = DB::select("SELECT User_id, strName FROM tblEmpInfo WHERE ysnactive = 1 ORDER BY strName ASC");
+        $totalDepartments = DB::table('tblDepartmentOrder')->count();
 
-        return view('dashboard', compact('departments', 'designations', 'shifts', 'supervisors'));
+        $totalLeaveTypes = DB::table('tblLeaveType')->count();
+
+        $pendingLeaves = DB::table('tblLeave')
+            ->where('status', 'Pending')
+            ->count();
+
+        return view('dashboard', compact(
+            'totalEmployees',
+            'totalDepartments',
+            'totalLeaveTypes',
+            'pendingLeaves'
+        ));
     }
 }
