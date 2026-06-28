@@ -8,14 +8,21 @@ use Illuminate\Support\Facades\DB;
 
 class DepartmentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $departments = DB::table('tblDepartmentOrder')
-            ->select(
-                'tblDepartmentOrder.*'
-            )
-            ->orderBy('tblDepartmentOrder.id', 'DESC')
-            ->paginate(10);
+        $query = DB::table('tblDepartmentOrder')
+            ->select('tblDepartmentOrder.*');
+
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('tblDepartmentOrder.departmentName', 'like', '%' . $request->search . '%')
+                    ->orWhere('tblDepartmentOrder.id', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $departments = $query->orderBy('tblDepartmentOrder.id', 'DESC')
+            ->paginate(10)
+            ->withQueryString();
 
         return view('departments.index', compact('departments'));
     }

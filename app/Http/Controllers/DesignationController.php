@@ -8,14 +8,21 @@ use Illuminate\Support\Facades\DB;
 
 class DesignationController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $designations = DB::table('tblDesignationOrder')
-            ->select(
-                'tblDesignationOrder.*'
-            )
-            ->orderBy('tblDesignationOrder.id', 'DESC')
-            ->paginate(10);
+        $query = DB::table('tblDesignationOrder')
+            ->select('tblDesignationOrder.*');
+
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('tblDesignationOrder.designation', 'like', '%' . $request->search . '%')
+                    ->orWhere('tblDesignationOrder.id', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $designations = $query->orderBy('tblDesignationOrder.id', 'DESC')
+            ->paginate(10)
+            ->withQueryString();
 
         return view('designations.index', compact('designations'));
     }

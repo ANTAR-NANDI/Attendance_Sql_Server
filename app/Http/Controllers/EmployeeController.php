@@ -11,9 +11,9 @@ class EmployeeController extends Controller
     /**
      * Display Employee List
      */
-    public function index()
+    public function index(Request $request)
     {
-        $employees = DB::table('tblEmpInfo as e')
+        $query = DB::table('tblEmpInfo as e')
             ->leftJoin('tblDepartmentOrder as d', 'e.strdepartment', '=', 'd.id')
             ->leftJoin('tblDesignationOrder as des', 'e.strdesignation', '=', 'des.id')
             ->leftJoin('tblShift as s', 'e.shiftName', '=', 's.id')
@@ -24,9 +24,21 @@ class EmployeeController extends Controller
                 'des.designation',
                 's.shiftName',
                 'boss.strName as reportingBoss'
-            )
-            ->orderBy('e.id', 'DESC')
-            ->paginate(20);
+            );
+
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('e.strName', 'like', '%' . $request->search . '%')
+                    ->orWhere('e.User_id', 'like', '%' . $request->search . '%')
+                    ->orWhere('d.departmentName', 'like', '%' . $request->search . '%')
+                    ->orWhere('des.designation', 'like', '%' . $request->search . '%')
+                    ->orWhere('s.shiftName', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $employees = $query->orderBy('e.id', 'DESC')
+            ->paginate(20)
+            ->withQueryString();
 
         return view('employees.index', compact('employees'));
     }
@@ -79,7 +91,14 @@ class EmployeeController extends Controller
             $photo = null;
 
             if ($request->hasFile('image_file')) {
-                $photo = 'data:' . $request->image_file->getMimeType() . ';base64,' . base64_encode(file_get_contents($request->image_file));
+
+                $image = $request->file('image_file');
+
+                $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+                $image->move(public_path('employees'), $filename);
+
+                $photo = $filename;
             }
 
             DB::table('tblEmpInfo')->insert([

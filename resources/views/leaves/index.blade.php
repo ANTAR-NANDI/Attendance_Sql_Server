@@ -38,7 +38,7 @@
                     type="text"
                     name="search"
                     value="{{ request('search') }}"
-                    placeholder="Search Leave Type..."
+                    placeholder="Search Leave Type"
                     class="flex-1 rounded-lg border border-slate-300 px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
 
                 <button

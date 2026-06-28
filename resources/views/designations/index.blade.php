@@ -40,7 +40,7 @@
                     type="text"
                     name="search"
                     value="{{ request('search') }}"
-                    placeholder="Search by User ID, Card No or Name..."
+                    placeholder="Search by Designation Name"
                     class="flex-1 rounded-lg border border-slate-300 px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
 
                 <button

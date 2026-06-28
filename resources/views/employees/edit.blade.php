@@ -274,12 +274,13 @@
                         </label>
 
                         @if($employee->image)
-                            <img
-                                src="{{ $employee->image }}"
+                             <img
+                                src="{{ asset('employees/' . $employee->image) }}"
                                 class="w-32 h-32 rounded-lg border object-cover mb-3">
                         @endif
 
                         <input
+                            placeholder="Upload Image"
                             type="file"
                             name="image_file"
                             class="w-full border border-gray-300 rounded-lg px-3 py-2">
